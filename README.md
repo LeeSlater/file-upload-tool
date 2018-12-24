@@ -1,37 +1,14 @@
-# file-uploads #
+# file-upload-tool #
 
-This app can be included (details below) from any page on the website in order to generate uploaders, which the user can then utilise to upload files into the directory structure under repo/apps/file-uploads/uploads/.
-
-
-## File overview ##
-
-**uploads/**
-This is where the files will be uploaded to, usually categorised by formID and userFormID in an xform, replacements for these can optionally be defined if not being used on an xform.
-
-**uploader/include.js**
-JavaScript code to generate the uploaders' HTML, pull in the correct CSS and control the user experience when using the uploaders
-
-**uploader/upload.php**
-Called by the AJAX in include.php, this handles the saving of the files into the right place in the file system.
-
-**uploader/delete.php**
-Called by the AJAX in include.php, this handles the deletion of user-selected files.
-
-**uploader/stylesheets/**
-Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
-
-**uploader/zipUploadsAction.php**
-Is included in Jadu's Actions, and if selected for use within an xform will call function in zip-uploads.php to zip the uploads related to a userFormID
-
-**uploader/zip-uploads.php**
-Contains a function to zip uploads related to a unique_id (userFormID on XForms)
+Once added to your server, this app can be included (details below) from pages on the website in order to generate file uploaders, which the user can utilise to upload files into the directory structure under file-upload-tool/uploads/. Note that you should take precautions to prevent public access to this directory.
 
 
-## Setting up ##
+
+## Setup ##
 
 First, include the include.js file via HTML script src, like so:
 ```
-<script src='/site/custom_scripts/repo/apps/file-uploads/include.js'></script>
+<script src='/path/to/file-upload-tool/include.js'></script>
 ```
 
 Optionally (see the parent_element parameter below) define the #file-uploaders element, which will be the default element for uploaders to be placed into:
@@ -76,8 +53,7 @@ Property Name   | Description
 label           | Defaults to 'files'. A string describing the files to be uploaded.
                 | This will be shown on the uploader's label, and spaces will be replaced with underscores for directory names.
 app_id          | \* A string that will be used when uploading files to define a directory for the app.
-                | If undefined and in an XForm, the formID will be taken from the session for use instead.
-unique_id       | \* A string which should be unique for every instance, if undefined and in an XForm, the userFormID will be used.
+unique_id       | \* A string which should be unique for every instance.
 allowed_uploads | If there is a limit on how many files can be submitted for the uploader, set it here. If 0 or undefined, no limit is set.
 extensions      | If there are a limited number of extensions the user is allowed to upload, define them in a comma-separated list
                 | If blank or undefined, defaults to 'pdf,jpg,jpeg,png,doc,docx,odt,txt'
@@ -91,7 +67,7 @@ parent_element  | If defined (via a CSS-style selector) the uploader will be pla
 \*\* Required upload fields require the `output_field_selector` to be defined, so that a validation button can be placed.
 
 
-Since this upload tool is entirely JavaScript reliant, we should warn users that do not have JavaScript enabled:
+Since this upload tool is entirely JavaScript reliant, you may wish to warn users that do not have JavaScript enabled:
 ```
 <noscript>
 	<div id="noscript-warning" style="background-color: #f5f5f5; border: 2px solid #f00; padding: 0px 10px;  max-width: 500px;">
@@ -100,3 +76,23 @@ Since this upload tool is entirely JavaScript reliant, we should warn users that
 	</div>
 </noscript>
 ```
+
+
+
+## File overview ##
+
+**uploads/**
+This is where the files will be uploaded to, optionally categorised by app_id and unique_id, which can optionally be defined (details in setup section).
+
+**uploader/include.js**
+JavaScript code to generate the uploaders' HTML, pull in the correct CSS and control the user experience when using the uploaders
+
+**uploader/upload.php**
+Called by the AJAX in include.php, this handles the saving of the files into the right place in the file system.
+
+**uploader/delete.php**
+Called by the AJAX in include.php, this handles the deletion of user-selected files.
+
+**uploader/stylesheets/**
+Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
+

@@ -1,4 +1,4 @@
-/* RBG XForms-style CSS */
+/* Generic style CSS */
 
 /* Uploader base appearance */
 .uploader {
@@ -9,7 +9,9 @@
 	padding-bottom: 10px;
 	font-family: 'Lato', sans-serif;
 	transition: background-color .20s linear, color .20s linear;
-	border-bottom: 2px solid #4b5559;
+	box-shadow: 0 1px 5px 0 rgba(0,0,0,0.35);
+	transition: background-color .20s linear, color .20s linear;
+	border-radius: 2px;
 }
 .uploader .label-container {
 	justify-content: center;
@@ -129,7 +131,6 @@
 /* Validation failed */
 .validation_failed {
 	background-color: #fda;
-	border-bottom: 2px solid #c1002b;
 }
 .validation_failed label:hover, .validation_failed label.drag {
 	background-color: #a00;
