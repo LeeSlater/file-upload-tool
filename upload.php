@@ -1,7 +1,4 @@
 <?php
-include_once '/var/www/jadu/public_html/site/custom_scripts/repo/logs/RBGerror_log.php';
-set_error_log(__FILE__);
-
 
 session_start();
 $new_file_names = array();
@@ -12,7 +9,7 @@ $errors = array();
  * Set a more specific upload directory by testing for an app_id in $_POST, and then
  * checking to see if there is an incomplete XForm that matches the app_id and $_SESSION variables.
  */
-$uploads_root = "/var/www/jadu/public_html/site/custom_scripts/repo/apps/file-uploads/uploads";
+$uploads_root = "/var/www/html/public_html/uploads";
 $uploads_dir = $uploads_root.'/general';
 if (isset($_POST['app_id'])) {
 	// App ID is set in $_POST variable, change uploads directory to relevant file
@@ -133,4 +130,3 @@ for ($i=0; $i<count($_FILES); $i++) {
 
 }
 
-restore_error_log();

@@ -1,3 +1,7 @@
+// Path to the file-upload-tool directory (where this file is located)
+var path_to_lib = "/libs/file-upload-tool";
+
+
 var submit_button = false;
 var output_field = false;
 var bypass_validator = false;
@@ -33,10 +37,10 @@ function generate_uploaders(uploaders, submit_button_selector, output_field_sele
 	}
 	if (stylesheet!=undefined && stylesheet!=false && stylesheet!="") {
 		// Load specified stylesheet
-		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/site/custom_scripts/repo/apps/file-uploads/uploader/stylesheets/"+stylesheet+"'>";
+		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/libs/file-upload-tool/stylesheets/"+stylesheet+"'>";
 	} else {
 		// Load default stylesheet
-		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/site/custom_scripts/repo/apps/file-uploads/uploader/stylesheets/default.css'>";
+		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/libs/file-upload-tool/stylesheets/default.css'>";
 	}
 	document.head.innerHTML+= "<link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>";
 
@@ -240,7 +244,7 @@ function upload_file(uploader,files,index) {
 
 	// Submit the above FormData via AJAX
 	var ajax = new XMLHttpRequest();
-	ajax.open("POST", "/site/custom_scripts/repo/apps/file-uploads/uploader/upload.php", true);
+	ajax.open("POST", path_to_lib+"/upload.php", true);
 	ajax.onload = function() {
 		if (ajax.status>=200 && ajax.status<400) {
 			// File located and loaded successfully
@@ -439,7 +443,7 @@ function remove_file(uploader_name, file_name) {
 	data.append("app_id",uploader.getAttribute("data-app_id"));
 	data.append("file_name",file_name);
 	var ajax = new XMLHttpRequest();
-	ajax.open("POST", "/site/custom_scripts/repo/apps/file-uploads/uploader/delete.php", true);
+	ajax.open("POST", path_to_lib+"/delete.php", true);
 	ajax.send(data);
 
 	if (output_field!=false) {
