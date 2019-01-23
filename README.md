@@ -1,6 +1,6 @@
 # file-upload-tool #
 
-Once added to your server, this app can be included (details below) from pages on the website in order to generate file uploaders, which the user can utilise to upload files into the directory structure under file-upload-tool/uploads/. Note that you should take precautions to prevent public access to this directory.
+A flexible file upload tool built in JavaScript and PHP to allow your users to upload files to your server.
 
 
 ## File overview ##
