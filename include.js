@@ -187,7 +187,6 @@ function manage_uploaders(uploader) {
  */
 function handle_uploads(uploader,e) {
 
-	// I don't think handle_uploads() can be called if the uploader is in progress, but just in case...
 	if (uploader.classList.contains("in-progress")) {
 		uploader.querySelector(".status").innerHTML = "Upload already in progress";
 		return;
@@ -254,12 +253,9 @@ function upload_file(uploader,files,index) {
 	var form_data = new FormData();
 	form_data.append(0,file);
 	form_data.append("extensions",uploader.getAttribute("data-extensions"));
-	// form_data.append("app_id",uploader.querySelector("input[name=app_id]").value);
 	form_data.append("app_id",uploader.getAttribute("data-app_id"));
 	form_data.append("uploader_name",uploader_name);
-	// if (uploader.querySelector("input[name=unique_id]")!=null) {
 	if (uploader.getAttribute("data-unique_id")!=null && uploader.getAttribute("data-unique_id")!=undefined) {
-		// form_data.append("unique_id",uploader.querySelector("input[name=unique_id]").value);
 		form_data.append("unique_id",uploader.getAttribute("data-unique_id"));
 	}
 
@@ -460,7 +456,6 @@ function remove_file(uploader_name, file_name) {
 		}
 	}
 	var data = new FormData();
-	// data.append("app_id",uploader.querySelector("input[name=app_id]").value);
 	data.append("app_id",uploader.getAttribute("data-app_id"));
 	data.append("file_name",file_name);
 	var ajax = new XMLHttpRequest();
