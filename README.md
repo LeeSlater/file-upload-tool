@@ -14,21 +14,21 @@ A flexible web-based file upload tool built in JavaScript and PHP.
 
 ## Setup ##
 
-- Download file-upload-tool and store it somewhere on your server.
+Download file-upload-tool and store it somewhere on your server.
 
-- Set the uploads file (i.e. where the files will be uploaded to) in upload.php and delete.php. Also set the file path of file-upload-tool in include.js.
+Set the uploads file (i.e. where the files will be uploaded to) in upload.php and delete.php. Also set the file path of file-upload-tool in include.js.
 
-- Include the include.js file via HTML script tag, like so:
+Include the include.js file via HTML script tag, like so:
 ```
 <script src='/path/to/file-upload-tool/include.js'></script>
 ```
 
-- Define the element with the ID 'file-uploaders', which will be the default element for uploaders to be placed into:
+Define the element with the ID 'file-uploaders', which will be the default element for uploaders to be placed into:
 ```
 <div id='file-uploaders'></div>
 ```
 
-- Next, use a JavaScript object to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
+Next, use a JavaScript object to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
 ```
 <script>
 	var uploaders = [
