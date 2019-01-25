@@ -334,6 +334,7 @@ function upload_file(uploader,files,index) {
  * Reset defined uploader
  */
 function reset_uploader(uploader) {
+	uploader.querySelector(".file_field").value = uploader.querySelector(".file_field").defaultValue;
 	if (uploader.classList.contains("validation_failed")) {
 		uploader.classList.remove("validation_failed");
 	}
