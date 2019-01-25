@@ -2,7 +2,7 @@
 
 A flexible web-based file upload tool built in JavaScript and PHP.
 
-**Feature overview**
+## Feature overview ##
 - Drag and drop capable
 - Multiple files can be uploaded at once
 - Uploaded files can be removed
