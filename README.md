@@ -1,45 +1,45 @@
 # file-upload-tool #
 
-A flexible file upload tool built in JavaScript and PHP to allow your users to upload files to your server.
+A flexible web-based file upload tool built in JavaScript and PHP.
 
-
-## File overview ##
-
-**include.js**
-JavaScript code to generate the uploaders' HTML, pull in the correct CSS and control the user experience when using the uploaders
-
-**upload.php**
-Called by the AJAX in include.php, this handles the saving of the files into the right place in the file system.
-
-**delete.php**
-Called by the AJAX in include.php, this handles the deletion of user-selected files.
-
-**stylesheets/**
-Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
+**Feature overview**
+- Drag and drop capable
+- Multiple files can be uploaded at once
+- Uploaded files can be removed
+- File size limit can be defined
+- Configurable limit for the number of files that can be uploaded
+- Integration with existing web forms, including required upload fields
+- Easily changed stylesheets
 
 
 ## Setup ##
 
-First, include the include.js file via HTML script src, like so:
+- Download file-upload-tool and store it somewhere on your server.
+
+- Set the uploads file (i.e. where the files will be uploaded to) in upload.php and delete.php. Also set the file path of file-upload-tool in include.js.
+
+- Include the include.js file via HTML script tag, like so:
 ```
 <script src='/path/to/file-upload-tool/include.js'></script>
 ```
 
-Optionally (see the parent_element parameter below) define the #file-uploaders element, which will be the default element for uploaders to be placed into:
+- Define the element with the ID 'file-uploaders', which will be the default element for uploaders to be placed into:
 ```
 <div id='file-uploaders'></div>
 ```
 
-Next, use a JavaScript object to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
+- Next, use a JavaScript object to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
 ```
 <script>
 	var uploaders = [
 		{
+			/* Uploader 1 */
 			label: 'fire safety certificate',
 			extensions: 'pdf,jpg,jpeg',
 			required: 'true'
 		},
 		{
+			/* Uploader 2 */
 			label: 'additional files'
 		}
 	];
@@ -53,8 +53,8 @@ Parameter              | Description
 -----------------------|---------------
 uploaders              | Required. An array of objects. Each object represents an individual upoader and has its own properties.
 submit_button_selector | Optional. A CSS-style selector to find a form submission button, which will then be replaced (visually) with a validation button to check required uploaders.
-output_field_selector  | Optional. If you wish to output the results to a field, use a CSS-style selector to do so. The uploaders will also use this field to keep track of past activities (e.g. on an XForm)
-stylesheet			   | Optional. The file name of an alternative stylesheet inside file-uploads/uploader/stylesheets/
+output_field_selector  | Optional. If you wish to output the JSON-encoded results to an input or text field, use a CSS-style selector to define the field here. The uploaders will also read this field on loading to keep track of past activities (e.g. upon going 'back' to this page on a multi-page online form)
+stylesheet			   | Optional. The file name of an alternative stylesheet inside file-upload-tool/stylesheets/
 
 
 The possible uploader object properties that you can include in each uploader are as follows:
@@ -84,4 +84,19 @@ Since this upload tool is entirely JavaScript reliant, you may wish to warn user
 	</div>
 </noscript>
 ```
+
+## File overview ##
+
+**include.js**
+JavaScript code to generate the uploaders' HTML, pull in the correct CSS and control the user experience when using the uploaders
+
+**upload.php**
+Called by the AJAX in include.php, this handles the saving of the files into the right place in the file system.
+
+**delete.php**
+Called by the AJAX in include.php, this handles the deletion of user-selected files.
+
+**stylesheets/**
+Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
+
 
