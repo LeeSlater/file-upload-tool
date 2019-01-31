@@ -399,7 +399,7 @@ function update_status(uploader) {
 
 	var optional_files             = "";
 	var optional_files_up_to_one   = "You may upload 1 file here";
-	var	optional_files_up_to_limit = "You may upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
+	var optional_files_up_to_limit = "You may upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
 
 	var num_files_limit_hit        = "Files successfully uploaded";
 
