@@ -43,7 +43,7 @@ Next, use a JavaScript object to define the individual uploaders and their prope
 			label: 'additional files'
 		}
 	];
-	generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet]);
+	window.onload = (function(){generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet])});
 </script>
 ```
 

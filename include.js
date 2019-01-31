@@ -58,10 +58,10 @@ function generate_uploaders(uploaders, submit_button_selector, output_field_sele
 	}
 	if (stylesheet!=undefined && stylesheet!=false && stylesheet!="") {
 		// Load specified stylesheet
-		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/libs/file-upload-tool/stylesheets/"+stylesheet+"'>";
+		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='"+path_to_lib+"/stylesheets/"+stylesheet+"'>";
 	} else {
 		// Load default stylesheet
-		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='/libs/file-upload-tool/stylesheets/default.css'>";
+		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='"+path_to_lib+"/stylesheets/default.css'>";
 	}
 	document.head.innerHTML+= "<link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>";
 
