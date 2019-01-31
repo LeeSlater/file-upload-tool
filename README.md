@@ -4,11 +4,14 @@ A flexible web-based file upload tool built in JavaScript and PHP.
 
 ## Feature overview ##
 - Drag and drop capable
-- Multiple files can be uploaded at once
-- Uploaded files can be removed
-- File size limit can be defined
+- Multiple independant upload fields can be generated on the page, each with its own separate configuration
+- Multiple files can be selected or dragged onto the uploaders
+- Uploaded files can be removed by the user
+- Configurable 'required' status
+- Configurable file size limit
 - Configurable limit for the number of files that can be uploaded
-- Integration with existing web forms, including required upload fields
+- Integration with existing web forms
+- Optional JSON output into a field for analyses by other scripts
 - Easily changed stylesheets
 
 
@@ -43,7 +46,9 @@ Next, use a JavaScript object to define the individual uploaders and their prope
 			label: 'additional files'
 		}
 	];
-	window.onload = (function(){generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet])});
+	window.onload = (function(){
+		generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet]);
+	});
 </script>
 ```
 
