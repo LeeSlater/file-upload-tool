@@ -388,19 +388,30 @@ function xfp_validate_submit() {
 
 
 /**
- * Update the uploader's status according to how many files have been uploaded, if
- * the field is required, how many files can be uploaded, etc
+ * Update the uploader's status according to how many files have been uploaded, if the field is required, how many files can be uploaded, etc.
+ * Also disable the uploader if the limit on the number of files allowed is reached.
  */
 function update_status(uploader) {
+
+	var required_files             = "You must upload at least 1 file here";
+	var required_files_up_to_one   = "You must upload 1 file here";
+	var required_files_up_to_limit = "You must upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
+
+	var optional_files             = "";
+	var optional_files_up_to_one   = "You may upload 1 file here";
+	var	optional_files_up_to_limit = "You may upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
+
+	var num_files_limit_hit        = "Files successfully uploaded";
+
 	if (uploader.getAttribute("data-required")=="yes") {
 		// Required
 		if (uploader.getAttribute("data-allowed-uploads")==0 || uploader.getAttribute("data-allowed-uploads")==undefined) {
 			// Unlimited files
-			uploader.querySelector(".status").innerHTML = "You must upload at least 1 file here";
+			uploader.querySelector(".status").innerHTML = required_files;
 		} else {
-			// File limit
+			// File limit hit
 			if (uploader.getAttribute("data-files-uploaded")==uploader.getAttribute("data-allowed-uploads")) {
-				uploader.querySelector(".status").innerHTML = "You have reached the file limit on this upload tool";
+				uploader.querySelector(".status").innerHTML = num_files_limit_hit;
 				if (!uploader.classList.contains("disabled")) {
 					uploader.classList.add("disabled");
 				}
@@ -409,9 +420,9 @@ function update_status(uploader) {
 					uploader.classList.remove("disabled");
 				}
 				if (uploader.getAttribute("data-allowed-uploads")==1) {
-					uploader.querySelector(".status").innerHTML = "You must upload 1 file here";
+					uploader.querySelector(".status").innerHTML = required_files_up_to_one;
 				} else {
-					uploader.querySelector(".status").innerHTML = "You must upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
+					uploader.querySelector(".status").innerHTML = required_files_up_to_limit;
 				}
 			}
 		}
@@ -419,11 +430,11 @@ function update_status(uploader) {
 		// Not required
 		if (uploader.getAttribute("data-allowed-uploads")==0 || uploader.getAttribute("data-allowed-uploads")==undefined) {
 			// Unlimited files
-			uploader.querySelector(".status").innerHTML = "";
+			uploader.querySelector(".status").innerHTML = optional_files;
 		} else {
-			// File limit
+			// File limit hit
 			if (uploader.getAttribute("data-files-uploaded")==uploader.getAttribute("data-allowed-uploads")) {
-				uploader.querySelector(".status").innerHTML = "You have reached the file limit on this upload tool";
+				uploader.querySelector(".status").innerHTML = num_files_limit_hit;
 				if (!uploader.classList.contains("disabled")) {
 					uploader.classList.add("disabled");
 				}
@@ -432,9 +443,9 @@ function update_status(uploader) {
 					uploader.classList.remove("disabled");
 				}
 				if (uploader.getAttribute("data-allowed-uploads")==1) {
-					uploader.querySelector(".status").innerHTML = "You may upload 1 file here";
+					uploader.querySelector(".status").innerHTML = optional_files_up_to_one;
 				} else {
-					uploader.querySelector(".status").innerHTML = "You may upload up to "+uploader.getAttribute("data-allowed-uploads")+" files here";
+					uploader.querySelector(".status").innerHTML = optional_files_up_to_limit;
 				}
 			}
 		}
