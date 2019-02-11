@@ -29,7 +29,7 @@ $errors = array();
  * Set a more specific upload directory by testing for an app_id in $_POST, and then
  * checking to see if there is an incomplete XForm that matches the app_id and $_SESSION variables.
  */
-$uploads_root = "/var/www/html/public_html/uploads";
+$uploads_root = "/var/www/site/public_html/custom/file-uploads/uploads";
 $uploads_dir = $uploads_root.'/general';
 if (isset($_POST['app_id'])) {
 	// App ID is set in $_POST variable, change uploads directory to relevant file
@@ -51,25 +51,6 @@ if (isset($_POST['app_id'])) {
 			chmod($uploads_dir.'/'.$_POST['unique_id'], 0777);
 			if (is_writable($uploads_dir.'/'.$_POST['unique_id'])) {
 				$uploads_dir = $uploads_dir.'/'.$_POST['unique_id'];
-			}
-		}
-	} else {
-		// Unique ID not manually set, check for userFormID to use as unique ID
-		include_once("JaduConstants.php");
-		include_once("xforms2/JaduXFormsUserForms.php");
-		$userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
-		$unregisteredUserID = isset($_SESSION['unregisteredUserID']) ? $_SESSION['unregisteredUserID'] : -1;
-		$userForm = getIncompleteFormIfExistsForUser($userID, $_POST['app_id'], $unregisteredUserID);
-		if ($userID!=-1 || $unregisteredUserID!=-1) {
-			$userFormID = $userForm->id;
-			if (is_writable($uploads_dir)) {
-				if (!file_exists($uploads_dir.'/'.$userFormID)) {
-					mkdir($uploads_dir.'/'.$userFormID);
-				}
-				chmod($uploads_dir.'/'.$userFormID, 0777);
-				if (is_writable($uploads_dir.'/'.$userFormID)) {
-					$uploads_dir = $uploads_dir.'/'.$userFormID;
-				}
 			}
 		}
 	}
