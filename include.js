@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 // Path to the file-upload-tool directory (where this file is located)
-var path_to_lib = "/libs/file-upload-tool";
+var path_to_lib = "/custom/file-uploads/file-upload-tool";
 
 
 var submit_button = false;
@@ -137,7 +137,7 @@ function generate_uploaders(uploaders, submit_button_selector, output_field_sele
 		validation_button.setAttribute("class",submit_button.getAttribute("class"));
 		validation_button.setAttribute("type","button");
 		validation_button.setAttribute("name","next");
-		validation_button.setAttribute("onclick","xfp_validate_submit()");
+		validation_button.setAttribute("onclick","validate_submit()");
 		validation_button.innerHTML = "Next";
 		submit_button.parentNode.appendChild(validation_button);
 		submit_button.setAttribute("style","display:none;")
@@ -233,7 +233,7 @@ function handle_uploads(uploader,e) {
  * increased index if there are more files to send once this file has finished uploading
  * Done this way to reduce traffic to the server upload file and upload one at a time, for stability
  */
-function upload_file(uploader,files,index) {
+function upload_file(uploader,files,index,bytes=1000000) {
 
 	var file = files[index];
 	var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
@@ -249,81 +249,145 @@ function upload_file(uploader,files,index) {
 		return;
 	}
 
+	// Split the file into smaller blobs before attempting upload
+	var blobs = [];
+	if (file.size < bytes) {
+		// File is already less than we would split it into, just upload the whole file
+		console.log("Small file");
+		blobs.push(file);
+	} else {
+		for (i=0; i<Math.ceil(file.size/bytes); i++) {
+			if ((i+1)*bytes > file.size) {
+				blobs.push(file.slice(i*bytes));
+			} else {
+				blobs.push(file.slice(i*bytes,(i+1)*bytes));
+			}
+			blobs[i].name = file.name;
+		}
+	}
+
+	upload_blob(uploader,blobs,0);
+
+
+	// BYPASS VALIDATION
+	// // Add to the data-files-uploaded attribute anyway in order to bypass the validation, preventing users from being stuck on the page by bugs
+	// if (bypass_validator==false) {
+	// 	alert("Unfortunately, one of your files has not uploaded properly. You can try again, but if this doesn’t work we may need to contact you to obtain a copy of the file.\n\nPlease continue to upload any other files requested before continuing through the form.");
+	// 	bypass_validator = true;
+	// }
+	// uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+file.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('Connection to the server was unsuccessful')\" style='color: #c1002b;'>error</span><span class='verbose'>Connection to the server was unsuccessful</span></div></div>";
+	// if (index+1 < files.length) {
+	// 	upload_file(uploader,files,index+1);
+	// } else {
+	// 	reset_uploader(uploader);
+	// }
+
+
+	
+
+	if (index+1 < files.length) {
+		upload_file(uploader,files,index+1);
+	} else {
+		// Finalise the upload of this file by calling join_blobs.php and updating the uploader
+		reset_uploader(uploader);
+	}
+
+}
+
+
+/**
+ * Upload a single blob (part of a file)
+ * Called from upload_file()
+ */
+function upload_blob(uploader,blobs,index,file_name=0,attempt=0) {
+	var blob = blobs[index];
+	var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
 	// Create a new FormData and insert the file and its uploader's properties
 	var form_data = new FormData();
-	form_data.append(0,file);
-	form_data.append("extensions",uploader.getAttribute("data-extensions"));
-	form_data.append("app_id",uploader.getAttribute("data-app_id"));
-	form_data.append("uploader_name",uploader_name);
+	form_data.append(0, blob);
+	form_data.append("blob_part", index);
+	form_data.append("blob_name", blob.name);
+	form_data.append("app_id", uploader.getAttribute("data-app_id"));
+	form_data.append("uploader_name", uploader_name);
 	if (uploader.getAttribute("data-unique_id")!=null && uploader.getAttribute("data-unique_id")!=undefined) {
-		form_data.append("unique_id",uploader.getAttribute("data-unique_id"));
+		form_data.append("unique_id", uploader.getAttribute("data-unique_id"));
+	}
+	if (file_name!=0) {
+		form_data.append("unique_filename", file_name);
 	}
 
 	// Submit the above FormData via AJAX
 	var ajax = new XMLHttpRequest();
-	ajax.open("POST", path_to_lib+"/upload.php", true);
+	ajax.open("POST", path_to_lib+"/upload_blob.php", true);
 	ajax.onload = function() {
 		if (ajax.status>=200 && ajax.status<400) {
 			// File located and loaded successfully
 			response = JSON.parse(ajax.responseText);
-			if (response.success==true) {
-				var total_number_of_uploads = (uploader.getAttribute("data-files-uploaded")-0)+1;
-				var file_name_without_dots = JSON.parse(response.new_file_names)[0].replace(/\./g, "_");
-				uploader.querySelector(".file-list").innerHTML+= "<div id='file_"+file_name_without_dots+"'><div class='file-name'>[<button type='button' onclick=\"remove_file(\'"+uploader.querySelector("input[name=uploader_name]").value+"\',\'"+JSON.parse(response.new_file_names)[0]+"\')\">Remove</button>] "+file.name+"</div><div class='file-status'><span class='material-icons' style='color: green;'>check</span><span class='verbose'>File was successfully uploaded</span></div></div>";
-				uploader.setAttribute("data-files-uploaded",total_number_of_uploads);
-				var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
-				if (output_field!=false) {
-					var uploads = JSON.parse(output_field.value);
-					var new_object = {};
-					new_object['original_name'] = file.name;
-					new_object['new_name'] = JSON.parse(response.new_file_names)[0];
-					if (!(typeof uploads[uploader_name]=="undefined" || uploads[uploader_name]==null)) {
-						uploads[uploader_name] = uploads[uploader_name].concat(new_object);
-					} else {
-						uploads[uploader_name] = [new_object];
+			console.log(response);
+			if (response.status==0) {
+				// Woohoo, do the next blob
+				if (index+1 < blobs.length) {
+					upload_blob(uploader,blobs,index+1,response.unique_filename);
+				} else {
+					// SUCCESSFUL
+					// Finalise the upload of this file by calling join_blobs.php and updating the uploader
+					var total_number_of_uploads = (uploader.getAttribute("data-files-uploaded")-0)+1;
+					var file_name_without_dots = response.unique_filename.replace(/\./g, "_");
+					uploader.querySelector(".file-list").innerHTML+= "<div id='file_"+file_name_without_dots+"'><div class='file-name'>[<button type='button' onclick=\"remove_file(\'"+uploader.querySelector("input[name=uploader_name]").value+"\',\'"+response.unique_filename+"\')\">Remove</button>] "+blob.name+"</div><div class='file-status'><span class='material-icons' style='color: green;'>check</span><span class='verbose'>File was successfully uploaded</span></div></div>";
+					uploader.setAttribute("data-files-uploaded",total_number_of_uploads);
+					var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
+					if (output_field!=false) {
+						var uploads = JSON.parse(output_field.value);
+						var new_object = {};
+						new_object['original_name'] = file.name;
+						new_object['new_name'] = response.unique_filename;
+						if (!(typeof uploads[uploader_name]=="undefined" || uploads[uploader_name]==null)) {
+							uploads[uploader_name] = uploads[uploader_name].concat(new_object);
+						} else {
+							uploads[uploader_name] = [new_object];
+						}
 					}
+					output_field.value = JSON.stringify(uploads);
+					update_status(uploader);
+					reset_uploader(uploader);
 				}
-				output_field.value = JSON.stringify(uploads);
-				update_status(uploader);
 			} else {
-				uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+file.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('"+response.errors[0]+"')\" style='color: #c1002b;'>error</span><span class='verbose'>"+response.errors[0]+"</span></div></div>";
-			}
-			if (index+1 < files.length) {
-				upload_file(uploader,files,index+1);
-			} else {
-				reset_uploader(uploader);
+				// Graceful failure
+				switch (response.status) {
+					case "1a":
+						console.log("Could not write files to root upload directory");
+						break;
+					case "1b":
+						console.log("Could not write files to resulting upload directory");
+						break;
+					case "2":
+						console.log("Failed to move file to upload directory");
+						break;
+					case "3":
+						console.log("blob_part not set");
+						break;
+				}
+				// TODO: Reset the uploader and notify the user of an error
 			}
 		} else {
-			// Failure to find or load the file
-			if (ajax.status==408) {
-				// Let the user know that their request timed out
-				uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+file.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('Upload request timed out')\" style='color: #c1002b;'>error</span><span class='verbose'>Upload request timed out</span></div></div>";
+			// Failure to find or load the file, try again up to 3 times
+			if (attempt<3) {
+				console.log("Upload of blob "+index+" failed, trying again (attempt number: "+attempt+")");
+				upload_blob(uploader,blobs,index,0,(attempt-0)+1);
 			} else {
-				uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+file.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('Connection to the server was unsuccessful')\" style='color: #c1002b;'>error</span><span class='verbose'>Connection to the server was unsuccessful</span></div></div>";
-			}
-			// Add to the data-files-uploaded attribute anyway in order to bypass the validation, preventing users from being stuck on the page by bugs
-			if (bypass_validator==false) {
-				alert("Unfortunately, one of your files has not uploaded properly. You can try again, but if this doesn’t work we may need to contact you to obtain a copy of the file.\n\nPlease continue to upload any other files requested before continuing through the form.");
-				bypass_validator = true;
-			}
-			if (index+1 < files.length) {
-				upload_file(uploader,files,index+1);
-			} else {
-				reset_uploader(uploader);
+				console.log("Upload of blob "+index+" failed on attempt number "+attempt+". Cancelling.");
+				// TODO: Reset the uploader and notify the user of an error
 			}
 		}
 	}
 	ajax.onerror = function() {
-		// Add to the data-files-uploaded attribute anyway in order to bypass the validation, preventing users from being stuck on the page by bugs
-		if (bypass_validator==false) {
-			alert("Unfortunately, one of your files has not uploaded properly. You can try again, but if this doesn’t work we may need to contact you to obtain a copy of the file.\n\nPlease continue to upload any other files requested before continuing through the form.");
-			bypass_validator = true;
-		}
-		uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+file.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('Connection to the server was unsuccessful')\" style='color: #c1002b;'>error</span><span class='verbose'>Connection to the server was unsuccessful</span></div></div>";
-		if (index+1 < files.length) {
-			upload_file(uploader,files,index+1);
+		// Try again up to 3 times
+		if (attempt<3) {
+			console.log("Upload of blob "+index+" failed, trying again (attempt number: "+attempt+")");
+			upload_blob(uploader,blobs,index,0,(attempt-0)+1);
 		} else {
-			reset_uploader(uploader);
+			console.log("Upload of blob "+index+" failed on attempt number "+attempt+". Cancelling.");
+			// TODO: Reset the uploader and notify the user of an error
 		}
 	}
 	ajax.send(form_data);
@@ -349,7 +413,7 @@ function reset_uploader(uploader) {
  * - If an uploader has an upload in progress, it will warn the user and ask for confirmation
  * - If network errors have been encountered, the user will be allowed to continue
  */
-function xfp_validate_submit() {
+function validate_submit() {
 	var uploaders = document.querySelectorAll(".uploader");
 	var validation_passed = true;
 	var upload_in_progress = false;

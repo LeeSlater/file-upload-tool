@@ -1,0 +1,2 @@
+- Build an upload_blob() function then have the upload_file() function send a request to join.php, which will join the blobs and return the final file name
+- Move the extension validation to JavaScript in order to check beforehand 
