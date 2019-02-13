@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * Scan the uploads directory and delete the defined file if found
  */
 
-$uploads_root = "/var/www/html/public_html/uploads";
+$uploads_root = "/var/www/site/public_html/custom/file-uploads/uploads";
 $uploads_dir = $uploads_root;
 if (isset($_POST['app_id'])) {
 	if (file_exists($uploads_root.'/'.$_POST['app_id'])) {
