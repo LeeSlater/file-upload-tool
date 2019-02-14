@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 // Path to the file-upload-tool directory (where this file is located)
-var path_to_lib = "/site/custom_scripts/repo/file-uploads/uploader";
+var path_to_lib = "/site/custom_scripts/repo/apps/file-uploads/uploader";
 
 // The message given to the user if there was a problem writing the file to the server. This is likely due to a server misconfiguration.
 var file_write_error = "There was an error uploading this file, please contact the website maintainers for assistance";
@@ -165,7 +165,7 @@ function generate_uploaders(uploaders, submit_button_selector, output_field_sele
 		Array.prototype.forEach.call(document.querySelectorAll('.uploader'),function(uploader) {
 			manage_uploaders(uploader);
 		});
-	}
+	});
 }
 
 
