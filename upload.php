@@ -21,8 +21,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 
+include_once '/var/www/jadu/public_html/site/custom_scripts/repo/logs/RBGerror_log.php';
+set_error_log(__FILE__);
+session_start();
+
 // The absolute path to your 'uploads' directory
-$uploads_root = "/var/www/site/public_html/custom/file-uploads/uploads";
+$uploads_root = "/var/www/jadu/public_html/site/custom_scripts/repo/apps/file-uploads/uploads";
 
 // The default directory for uploads if no app_id is set
 $uploads_dir = $uploads_root.'/'.'general';
@@ -65,6 +69,25 @@ if (isset($_POST['app_id'])) {
 		}
 		chmod($uploads_dir.'/'.$_POST['unique_id'], $directory_permissions);
 		$uploads_dir = $uploads_dir.'/'.$_POST['unique_id'];
+	} else {
+		// Unique ID not manually set, check for userFormID to use as unique ID
+		include_once("JaduConstants.php");
+		include_once("xforms2/JaduXFormsUserForms.php");
+		$userID = isset($_SESSION['userID']) ? $_SESSION['userID'] : -1;
+		$unregisteredUserID = isset($_SESSION['unregisteredUserID']) ? $_SESSION['unregisteredUserID'] : -1;
+		$userForm = getIncompleteFormIfExistsForUser($userID, $_POST['app_id'], $unregisteredUserID);
+		if ($userID!=-1 || $unregisteredUserID!=-1) {
+			$userFormID = $userForm->id;
+			if (is_writable($uploads_dir)) {
+				if (!file_exists($uploads_dir.'/'.$userFormID)) {
+					mkdir($uploads_dir.'/'.$userFormID);
+				}
+				chmod($uploads_dir.'/'.$userFormID, 0777);
+				if (is_writable($uploads_dir.'/'.$userFormID)) {
+					$uploads_dir = $uploads_dir.'/'.$userFormID;
+				}
+			}
+		}
 	}
 }
 // If uploader_name has been set, create a sub-directory using this name
