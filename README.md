@@ -7,6 +7,7 @@ A flexible web-based file upload tool built in JavaScript and PHP.
 - Multiple independant upload fields can be generated on the page, each with its own separate configuration
 - Multiple files can be selected or dragged onto the uploaders
 - Uploaded files can be removed by the user
+- Files are sliced during upload and each blob uploaded at a time for reduced chance of timeouts
 - Configurable 'required' status
 - Configurable file size limit
 - Configurable limit for the number of files that can be uploaded
@@ -14,12 +15,11 @@ A flexible web-based file upload tool built in JavaScript and PHP.
 - Optional JSON output into a field for analyses by other scripts
 - Easily changed stylesheets
 
-
 ## Setup ##
 
-Download file-upload-tool and store it somewhere on your server.
+Download file-upload-tool and store it somewhere on your server that is accessible by the website.
 
-Set the uploads folder (i.e. where the files will be uploaded to) in upload.php and delete.php. Also set the file path of file-upload-tool in include.js.
+Set the uploads folder (i.e. where the files will be uploaded to) in upload.php and delete.php. Also set the URL of file-upload-tool in include.js.
 
 Include the include.js file via HTML script tag, like so:
 ```
@@ -104,4 +104,8 @@ Called by the AJAX in include.php, this handles the deletion of user-selected fi
 **stylesheets/**
 Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
 
+
+## TODO ##
+- Uploader-specific help text to give further instruction to the user
+- Mid-upload cancellation
 
