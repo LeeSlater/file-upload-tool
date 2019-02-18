@@ -54,7 +54,7 @@ The generate_uploaders() parameters are:
 
 Parameter              | Description
 -----------------------|---------------
-uploaders              | Required. An array of objects. Each object represents an individual upoader and has its own properties.
+uploaders              | Required. An array of objects (aka JSON). Each object represents an individual upoader and has its own properties.
 submit_button_selector | Optional. A CSS-style selector to find a form submission button, which will then be replaced (visually) with a validation button to check required uploaders.
 output_field_selector  | Optional. If you wish to output the JSON-encoded results to an input or text field, use a CSS-style selector to define the field here. The uploaders will also read this field on loading to keep track of past activities (e.g. upon going 'back' to this page on a multi-page online form)
 stylesheet			   | Optional. The file name of an alternative stylesheet inside file-upload-tool/stylesheets/
@@ -65,8 +65,8 @@ The possible uploader object properties that you can include in each uploader ar
 Property Name   | Description
 ----------------|--------------- 
 label           | Defaults to 'files'. A string describing the files to be uploaded. This will be shown on the uploader's label, and spaces will be replaced with underscores for directory names during upload.
-app_id          | \* A string that will be used when uploading files to define a directory for the app. For example if you have several apps using this uploader, the name of the app could be here.
-unique_id       | \* A string which should be unique for every instance. In a form for example, this may be the ID for the instance this user is in.
+app_id          | \* Optional. A string that will be used when uploading files to define a directory for the app. For example if you have several apps using this uploader, the name of the app could be here.
+unique_id       | \* Optional. A string which should be unique for every instance. In a form for example, this may be the user's form ID.
 allowed_uploads | If there is a limit on how many files can be submitted for the uploader, set it here. If 0 or undefined, no limit is set.
 extensions      | If there are a limited number of extensions the user is allowed to upload, define them in a comma-separated list. If blank or undefined, defaults to 'pdf,jpg,jpeg,png,doc,docx,odt,txt'.
 required        | \*\* If at least one file is required uploading, set to true. If false or undefined, not required.
@@ -106,4 +106,4 @@ Storage for the stylesheets. 'default.css' is loaded unless the filename of anot
 ## TODO ##
 - Uploader-specific help text to give further instruction to the user
 - Mid-upload cancellation
-
+- Upload progress bar
