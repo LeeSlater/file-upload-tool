@@ -32,18 +32,18 @@ Define the element with the ID 'file-uploaders', which will be the default eleme
 Next, use JSON to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
 ```
 <script>
-    var uploaders = [
-        {
+	var uploaders = 
+		{
 			/* Uploader 1 */
-            "label": "fire safety certificate",
-            "extensions": "pdf,jpg,jpeg,doc,docx,odt,txt,png",
-            "required": "true",
-        },
-        {
+			"label": "fire safety certificate",
+			"extensions": "pdf,jpg,jpeg,doc,docx,odt,txt,png",
+			"required": "true",
+		},
+		{
 			/* Uploader 2 */
-            "label": "additional files",
-        }
-    ];
+			"label": "additional files",
+		}
+	];
 	window.onload = (function(){
 		generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet]);
 	});
