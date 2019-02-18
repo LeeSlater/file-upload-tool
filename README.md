@@ -3,14 +3,12 @@
 A flexible web-based file upload tool built in JavaScript and PHP.
 
 ## Feature overview ##
+- Flexible configuration
+- Multiple independant upload fields can be defined and configured with JSON
 - Drag and drop capable
-- Multiple independant upload fields can be generated on the page, each with its own separate configuration
-- Multiple files can be selected or dragged onto the uploaders
-- Uploaded files can be removed by the user
-- Files are sliced during upload and each blob uploaded at a time for reduced chance of timeouts
-- Configurable 'required' status
-- Configurable file size limit
-- Configurable limit for the number of files that can be uploaded
+- Multiple files can be selected or dragged onto the uploaders at once
+- Mistakenly uploaded files can be removed by the user
+- Files are uploaded one chunk at a time to reduce the chance of timeout on large file uploads
 - Integration with existing web forms
 - Optional JSON output into a field for analyses by other scripts
 - Easily changed stylesheets
@@ -31,21 +29,21 @@ Define the element with the ID 'file-uploaders', which will be the default eleme
 <div id='file-uploaders'></div>
 ```
 
-Next, use a JavaScript object to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
+Next, use JSON to define the individual uploaders and their properties, before calling generate_uploaders() to create them:
 ```
 <script>
-	var uploaders = [
-		{
+    var uploaders = [
+        {
 			/* Uploader 1 */
-			label: 'fire safety certificate',
-			extensions: 'pdf,jpg,jpeg',
-			required: 'true'
-		},
-		{
+            "label": "fire safety certificate",
+            "extensions": "pdf,jpg,jpeg,doc,docx,odt,txt,png",
+            "required": "true",
+        },
+        {
 			/* Uploader 2 */
-			label: 'additional files'
-		}
-	];
+            "label": "additional files",
+        }
+    ];
 	window.onload = (function(){
 		generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet]);
 	});
