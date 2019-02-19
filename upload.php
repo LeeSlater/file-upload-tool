@@ -135,22 +135,23 @@ error_log("(".$_SERVER['REMOTE_ADDR'].") ".json_encode($outputArray));
 
 
 
-
-
 if ($_POST['blob_part']=="pants") {
 	for ($i=1; $i<count($file_blobs); $i++) {
 		if (!file_exists($uploads_dir.'/'.$output['unique_filename'].'.'.$i)) {
 			error_log("File blob '".$uploads_dir.'/'.$output['unique_filename'].'.'.$i."' not found");
-			echo "File blob '".$uploads_dir.'/'.$output['unique_filename'].'.'.$i."' not found";
+			$output['status'] = '5';
+			$output['error'] = "File blob '".$uploads_dir.'/'.$output['unique_filename'].'.'.$i."' not found";
+			echo json_encode($output);
 			exit;
 		}
 		file_put_contents($uploads_dir.'/'.$output['unique_filename'].'.0', file_get_contents($uploads_dir.'/'.$output['unique_filename'].'.'.$i), FILE_APPEND);
 		unlink($uploads_dir.'/'.$output['unique_filename'].'.'.$i);
 	}
+	file_put_contents($uploads_dir.'/'.$output['unique_filename'].'.0', file_get_contents($uploads_dir.'/'.$output['unique_filename'].'.pants'), FILE_APPEND);
+	unlink($uploads_dir.'/'.$output['unique_filename'].'.pants');
+	rename($uploads_dir.'/'.$output['unique_filename'].'.0', $uploads_dir.'/'.$output['unique_filename']);
 }
-file_put_contents($uploads_dir.'/'.$output['unique_filename'].'.0', file_get_contents($uploads_dir.'/'.$output['unique_filename'].'.pants'), FILE_APPEND);
-unlink($uploads_dir.'/'.$output['unique_filename'].'.pants');
-rename($uploads_dir.'/'.$output['unique_filename'].'.0', $uploads_dir.'/'.$output['unique_filename']);
+
 
 
 

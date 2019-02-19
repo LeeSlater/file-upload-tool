@@ -344,7 +344,7 @@ function upload_blob(uploader,blobs,index,files,file_index,file_name=0,attempt=0
 					update_status(uploader);
 
 					// If all files completed, reset uploader
-					if (index+1 >= files.length) {
+					if (file_index+1 >= files.length) {
 						reset_uploader(uploader);
 					}
 				}
@@ -371,6 +371,10 @@ function upload_blob(uploader,blobs,index,files,file_index,file_name=0,attempt=0
 						console.log("File size limit exceeded");
 						uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+blob.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('"+file_write_error+"')\" style='color: #c1002b;'>error</span><span class='verbose'>File size limit exceeded</span></div></div>";
 						break;
+					default:
+						console.log("Error uploading file");
+						uploader.querySelector(".file-list").innerHTML+= "<div><div class='file-name'>"+blob.name+"</div><div class='file-status error'><span class='material-icons' onclick=\"alert('"+file_write_error+"')\" style='color: #c1002b;'>error</span><span class='verbose'>Error writing file to server</span></div></div>";
+						break;
 				}
 				// Bypass the file limit validation, preventing users from being stuck on the page by bugs
 				if (bypass_validator==false) {
@@ -386,7 +390,7 @@ function upload_blob(uploader,blobs,index,files,file_index,file_name=0,attempt=0
 		} else {
 			// Failure to find or load the file, try again up to 3 times
 			if (attempt<3) {
-				console.log("Upload of blob "+index+" failed, trying again (attempt number: "+attempt+")");
+				console.log("Upload of blob "+index+" failed, trying again (status "+ajax.status+", attempt number: "+attempt+")");
 				upload_blob(uploader,blobs,index,files,file_index,0,(attempt-0)+1);
 			} else {
 				console.log("Upload of blob "+index+" failed on attempt number "+attempt+". Cancelling.");
