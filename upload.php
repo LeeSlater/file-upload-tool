@@ -82,7 +82,7 @@ if (isset($_POST['app_id'])) {
 				if (!file_exists($uploads_dir.'/'.$userFormID)) {
 					mkdir($uploads_dir.'/'.$userFormID);
 				}
-				chmod($uploads_dir.'/'.$userFormID, 0777);
+				chmod($uploads_dir.'/'.$userFormID, $directory_permissions);
 				if (is_writable($uploads_dir.'/'.$userFormID)) {
 					$uploads_dir = $uploads_dir.'/'.$userFormID;
 				}
