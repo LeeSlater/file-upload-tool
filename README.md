@@ -105,5 +105,8 @@ Storage for the stylesheets. 'default.css' is loaded unless the filename of anot
 
 ## TODO ##
 - Uploader-specific help text to give further instruction to the user
+- Global uploader settings, taking individual overrides into account (e.g. set app_id once rather than on every uploader object)
+- Scheduled delete/clearup
 - Mid-upload cancellation
 - Upload progress bar
+
