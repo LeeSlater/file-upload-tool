@@ -224,7 +224,7 @@ function handle_uploads(uploader,e) {
 	// Check if the uploader will go over the number of files allowed, and cancel the upload if so (and tell the user)
 	if ((uploader.getAttribute("data-files-uploaded")-0)+number_of_files > uploader.getAttribute("data-allowed-uploads")-0) {
 		if ((uploader.getAttribute("data-allowed-uploads")-0)!=0) {
-			uploader.querySelector(".status").innerHTML = "Upload cancelled, only "+uploader.getAttribute("data-allowed-uploads")+" file"+((uploader.getAttribute("data-allowed-uploads")-0)==1?"":"s")+" can be uploaded";
+			uploader.querySelector(".status").innerHTML = "Upload cancelled, only "+uploader.getAttribute("data-allowed-uploads")+" file"+((uploader.getAttribute("data-allowed-uploads")-0)==1?"":"s")+" can be uploaded here";
 			reset_uploader(uploader);
 			return;
 		}
