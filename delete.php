@@ -19,12 +19,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-
 /**
  * Scan the uploads directory and delete the defined file if found
  */
-
-ini_set('display_errors', true);
 
 require_once("class.file_manager.php");
 $file_manager = new file_manager();
@@ -36,3 +33,4 @@ if (isset($_POST['app_id'])) {
 }
 
 $file_manager->delete_file($_POST['file_name']);
+
