@@ -246,7 +246,7 @@ function handle_uploads(uploader,e) {
 			error_msg+= ", "+number_of_files+" files to be uploaded";
 			error_msg+= ", "+uploader.getAttribute("data-allowed-uploads")+" files allowed";
 			error_log(error_msg);
-			uploader.querySelector(".status").innerHTML = "Upload cancelled, only "+uploader.getAttribute("data-allowed-uploads")+" file"+((uploader.getAttribute("data-allowed-uploads")-0)==1?"":"s")+" can be uploaded";
+			uploader.querySelector(".status").innerHTML = "Upload cancelled, only "+uploader.getAttribute("data-allowed-uploads")+" file"+((uploader.getAttribute("data-allowed-uploads")-0)==1?"":"s")+" can be uploaded here";
 			reset_uploader(uploader);
 			return;
 		}
