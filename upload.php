@@ -31,12 +31,6 @@ if (!isset($_POST['blob_part'])) {
 	echo json_encode($output);
 	exit;
 }
-if (!is_writable($file_manager->uploads_root)) {
-	error_log("(".$_SERVER['REMOTE_ADDR'].") "."Cannot write files to ".$file_manager->uploads_root);
-	$output['status'] = "1a";
-	echo json_encode($output);
-	exit;
-}
 
 
 // Set a more specific upload directory by testing for an app_id an unique_id in $_POST

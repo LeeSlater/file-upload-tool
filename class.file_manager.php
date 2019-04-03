@@ -102,13 +102,6 @@ class file_manager {
 	 * Upload the blob, and if it's the last blob for the file continue to merge them into one
 	 */
 	public function upload_blob() {
-		// Error handling
-		if (!is_writable($this->uploads_root)) {
-			error_log("(".$_SERVER['REMOTE_ADDR'].") Cannot write files to ".$this->uploads_root);
-			$output['status'] = "1a";
-			echo json_encode($output);
-			exit;
-		}
 		if (!file_exists($this->uploads_dir) || !is_writable($this->uploads_dir)) {
 			error_log("(".$_SERVER['REMOTE_ADDR'].") Cannot write files to uploads_dir");
 			$output['status'] = '1b';
