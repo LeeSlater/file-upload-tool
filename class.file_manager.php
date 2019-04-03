@@ -38,7 +38,7 @@ class file_manager {
 		 * The absolute path to your 'uploads' directory, where all uploads by this tool are stored.
 		 * Note: This script should have the necessary privileges to modify the contents of this folder.
 		 */
-		$this->uploads_root = "/var/www/jadu/public_html/custom_scripts/repo/apps/file-uploads/uploads";
+		$this->uploads_root = "/var/www/jadu/public_html/site/custom_scripts/repo/apps/file-uploads/uploads";
 		
 		/**
 		 * Set default uploads directory
