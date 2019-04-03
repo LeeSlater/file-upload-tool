@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
 
+session_start();
+
 require_once("class.file_manager.php");
 $file_manager = new file_manager();
 
