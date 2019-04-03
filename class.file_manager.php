@@ -89,11 +89,12 @@ class file_manager {
 		$extra_files = explode("/", substr($this->uploads_dir, strlen($this->uploads_root)));
 		$path = $this->uploads_root;
 		foreach ($extra_files as $file) {
+			if ($file=="") continue;
 			if (!file_exists($path."/".$file)) {
 				mkdir($path."/".$file);
-				chmod($path."/".$file, $directory_permissions);
-				$path = $path."/".$file;
+				chmod($path."/".$file, $this->directory_permissions);
 			}
+			$path = $path."/".$file;
 		}
 	}
 
