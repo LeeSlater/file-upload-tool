@@ -115,6 +115,9 @@ function generate_uploaders(uploaders, submit_button_selector, output_field_sele
 		uploader_html+= "<span id='status-"+i+"' class='status'></span>";
 		uploader_html+= "<div class='label-container'><label for='file-"+i+"'>Browse&nbsp;for&nbsp;"+uploaders[i].label+"</label></div>";
 		uploader_html+= "<input id='file-"+i+"' class='file_field' name='files' type='file' multiple/>";
+		if (uploaders[i].help!=undefined) {
+			uploader_html+= "<div class='help'>"+uploaders[i].help+"</div>";
+		}
 		uploader_html+= "<div id='file-list-"+i+"' class='file-list'>"+initial_file_list_html+"</div>";
 		uploader_html+= "<input id='uploader_name-"+i+"' name='uploader_name' class='hidden' type='text' value='"+uploader_name+"' readonly/>";
 		uploader_html+="</div>";
