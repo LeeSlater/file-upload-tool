@@ -49,6 +49,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 	pointer-events: none;
 	padding-top: 10px;
 }
+.uploader > .help {
+	background-color: #eee;
+	margin: 5px 10px;
+	padding: 10px 15px;
+	border: solid 1px #ccc;
+	font-size: 1rem;
+}
 .uploader label {
 	transition: background-color .20s linear;
 	background-color: #c1002b;
@@ -72,7 +79,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .file-list > div {
 	padding: 8px 15px 9px 15px;
 	margin: 0px 10px;
-	border-top: solid 1px #bbb;
+	border-top: solid 1px #ccc;
 }
 .file-list > div:nth-child(1) {
 	border-top: none;
@@ -152,6 +159,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .uploader.in-progress > .status {
 	color: #cacaca;
 	font-weight: normal;
+}
+.uploader.disabled > .help {
+	background-color: #eee;
+	margin: 5px 10px;
+	padding: 10px 15px;
+	border: solid 1px #eee;
+	font-size: 1rem;
+	color: #999;
 }
 
 
