@@ -93,11 +93,14 @@ Since this upload tool is entirely JavaScript reliant, you may wish to warn user
 **include.js**
 JavaScript code to generate the uploaders' HTML, pull in the correct CSS and control the user experience when using the uploaders
 
+**class.file_manager.php**
+Contains server-side functions for file management such as blob-merging, file deletion and upload path preparation.
+
 **upload.php**
-Called by the AJAX in include.php, this handles the saving of the files into the right place in the file system.
+Called by the AJAX in include.php, this calls the function in class.file_manager.php responsible for handling the saving of the files into the right place in the file system.
 
 **delete.php**
-Called by the AJAX in include.php, this handles the deletion of user-selected files.
+Called by the AJAX in include.php, this calls the function in class.file_manager.php responsible for handling the deletion of user-selected files.
 
 **stylesheets/**
 Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
