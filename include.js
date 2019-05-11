@@ -1,6 +1,6 @@
 
 /*
-file-upload-tool - JavaScript and PHP web-based file uploader
+FancyPants File Uploader - JavaScript and PHP web-based file uploader
 Copyright (C) 2018  Lee Slater
 
 This program is free software; you can redistribute it and/or
