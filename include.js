@@ -31,6 +31,7 @@ var validation_bypass_msg = "Unfortunately, one of your files has not uploaded p
 // See the start of the update_status() function to modify the status messages
 
 
+// Variables to be used by the code, do not edit
 var submit_button = false;
 var output_field = false;
 var bypass_validator = false;
