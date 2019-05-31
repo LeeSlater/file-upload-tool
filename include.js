@@ -245,7 +245,11 @@ function handle_uploads(uploader,e) {
  * increased index if there are more files to send once this file has finished uploading
  * Done this way to reduce traffic to the server upload file and upload one at a time, for stability
  */
-function upload_file(uploader,files,index,bytes=1000000) {
+function upload_file(uploader,files,index,bytes) {
+
+	if (bytes==undefined || bytes==false || bytes=="") {
+		bytes = 1000000;
+	}
 
 	var file = files[index];
 	var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
@@ -292,7 +296,15 @@ function upload_file(uploader,files,index,bytes=1000000) {
  * Upload a single blob (part of a file)
  * Called from upload_file()
  */
-function upload_blob(uploader,blobs,index,files,file_index,file_name=0,attempt=0) {
+function upload_blob(uploader,blobs,index,files,file_index,file_name,attempt) {
+
+	if (file_name==undefined || file_name==false || file_name=="") {
+		file_name = 0;
+	}
+	if (attempt==undefined || attempt==false || attempt=="") {
+		attempt = 0;
+	}
+	
 	var blob = blobs[index];
 	var uploader_name = uploader.querySelector("input[name=uploader_name]").value;
 	// Create a new FormData and insert the file and its uploader's properties
