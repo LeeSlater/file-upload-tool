@@ -105,8 +105,3 @@ Called by the AJAX in include.php, this calls the function in class.file_manager
 **stylesheets/**
 Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
 
-
-## TODO ##
-- Global uploader settings, taking individual overrides into account (e.g. set app_id once rather than on every uploader object)
-- Upload progress bar & mid-upload cancellation
-
