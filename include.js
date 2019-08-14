@@ -39,39 +39,41 @@ var bypass_validator = false;
 
 /**
  * Generates the HTML for the uploaders based on the parameters given for each one in the uploaders object.
- * Will also generate a validation button if submit_button is defined, set and read the output_field if
- * output_field_selector is defined and valid, then call further sections of the script.
+ * Will also generate a validation button if settings.submit_button is defined, set and read output_field if
+ * settings.output_field_selector is defined and valid, then call further sections of the script.
  */
-function generate_uploaders(uploaders, submit_button_selector, output_field_selector, stylesheet) {
+function generate_uploaders(uploaders, settings) {
 
 	// Check the parameters, if they have been set and how to proceed
 	if (uploaders=="undefined" || uploaders==undefined || uploaders=="") {
 		console.log("Custom uploader info not set. Cancelling uploader generation.");
 		return;
 	}
-	if (output_field_selector!=undefined && output_field_selector!=false && output_field_selector!="") {
-		if (document.querySelector(output_field_selector)!=false) {
-			output_field = document.querySelector(output_field_selector);
+
+	// Settings
+	if (settings!=undefined && settings.output_field_selector!=undefined && settings.output_field_selector!=false && settings.output_field_selector!="") {
+		if (document.querySelector(settings.output_field_selector)!=false) {
+			output_field = document.querySelector(settings.output_field_selector);
 		} else {
-			console.log(output_field_selector+" could not be found");
+			console.log(settings.output_field_selector+" could not be found");
 			return;
 		}
 	}
-	if (submit_button_selector!=undefined && submit_button_selector!=false && submit_button_selector!="") {
-		if (document.querySelector(submit_button_selector)!=false) {
-			submit_button = document.querySelector(submit_button_selector);
+	if (settings!=undefined && settings.submit_button_selector!=undefined && settings.submit_button_selector!=false && settings.submit_button_selector!="") {
+		if (document.querySelector(settings.submit_button_selector)!=false) {
+			submit_button = document.querySelector(settings.submit_button_selector);
 		} else {
-			console.log(submit_button_selector+" could not be found");
+			console.log(settings.submit_button_selector+" could not be found");
 			return;
 		}
 	}
-	if (stylesheet!=undefined && stylesheet!=false && stylesheet!="") {
-		// Load specified stylesheet
-		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='"+path_to_lib+"/stylesheets/"+stylesheet+"'>";
+	if (settings!=undefined && settings.stylesheet!=undefined && settings.stylesheet!=false && settings.stylesheet!="") {
+		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='"+path_to_lib+"/stylesheets/"+settings.stylesheet+"'>";
 	} else {
-		// Load default stylesheet
 		document.head.innerHTML+= "<link rel='stylesheet' type='text/css' href='"+path_to_lib+"/stylesheets/default.css'>";
 	}
+
+	// Used for icons
 	document.head.innerHTML+= "<link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>";
 
 	// Loop through the properties of each uploader and add customised HTML for each one
@@ -606,5 +608,4 @@ function remove_file(uploader_name, file_name) {
 
 	uploader.setAttribute('data-files-uploaded',uploader.getAttribute('data-files-uploaded')-1);
 	update_status(uploader);
-
 }

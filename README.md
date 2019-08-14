@@ -45,22 +45,26 @@ Next, use JSON to define the individual uploaders and their properties, before c
 		}
 	];
 	window.onload = (function(){
-		generate_uploaders(uploaders[, submit_button_selector][, output_field_selector][, stylesheet]);
+		generate_uploaders(uploaders[, settings]);
 	});
 </script>
 ```
 
-The generate_uploaders() parameters are:
+The generate_uploaders() accepts two parameters:
+- uploaders: Required. A string of JSON where each object represents an individual uploader and its properties.
+- settings: Optional. An object containing the global settings for the uploader.
+
+
+Available settings properties:
 
 Parameter              | Description
 -----------------------|---------------
-uploaders              | Required. An array of objects (aka JSON). Each object represents an individual upoader and has its own properties.
 submit_button_selector | Optional. A CSS-style selector to find a form submission button, which will then be replaced (visually) with a validation button to check required uploaders.
 output_field_selector  | Optional. If you wish to output the JSON-encoded results to an input or text field, use a CSS-style selector to define the field here. The uploaders will also read this field on loading to keep track of past activities (e.g. upon going 'back' to this page on a multi-page online form)
 stylesheet			   | Optional. The file name of an alternative stylesheet inside file-upload-tool/stylesheets/
 
 
-The possible uploader object properties that you can include in each uploader are as follows:
+Available uploader object properties:
 
 Property Name   | Description
 ----------------|--------------- 
@@ -103,5 +107,5 @@ Called by the AJAX in include.php, this calls the function in class.file_manager
 Called by the AJAX in include.php, this calls the function in class.file_manager.php responsible for handling the deletion of user-selected files.
 
 **stylesheets/**
-Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified.
+Storage for the stylesheets. 'default.css' is loaded unless the filename of another is specified in settings.
 
