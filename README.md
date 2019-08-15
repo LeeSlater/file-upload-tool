@@ -51,17 +51,8 @@ Next, use JSON to define the individual uploaders and their properties, before c
 ```
 
 The generate_uploaders() accepts two parameters:
-- uploaders: Required. A string of JSON where each object represents an individual uploader and its properties.
-- settings: Optional. An object containing the global settings for the uploader.
-
-
-Available settings properties:
-
-Parameter              | Description
------------------------|---------------
-submit_button_selector | Optional. A CSS-style selector to find a form submission button, which will then be replaced (visually) with a validation button to check required uploaders.
-output_field_selector  | Optional. If you wish to output the JSON-encoded results to an input or text field, use a CSS-style selector to define the field here. The uploaders will also read this field on loading to keep track of past activities (e.g. upon going 'back' to this page on a multi-page online form)
-stylesheet			   | Optional. The file name of an alternative stylesheet inside file-upload-tool/stylesheets/
+- uploaders: Required. A JSON instance where each object represents an individual uploader and its properties.
+- settings: Optional. An object containing global settings for the uploader.
 
 
 Available uploader object properties:
@@ -81,6 +72,15 @@ parent_element          | If defined (via a CSS-style selector) the uploader wil
 \*   The final file structure for an upload should be `uploads/<app_id>/<unique_id>/<uploader_label>/<files>`.
 
 \*\* Required upload fields require the `output_field_selector` to be defined, so that a validation button can be placed.
+
+
+Available settings properties:
+
+Parameter              | Description
+-----------------------|---------------
+submit_button_selector | Optional. A CSS-style selector to find a form submission button, which will then be replaced (visually) with a validation button to check required uploaders.
+output_field_selector  | Optional. If you wish to output the JSON-encoded results to an input or text field, use a CSS-style selector to define the field here. The uploaders will also read this field on loading to keep track of past activities (e.g. upon going 'back' to this page on a multi-page online form)
+stylesheet			   | Optional. The file name of an alternative stylesheet inside file-upload-tool/stylesheets/
 
 
 Since this upload tool is entirely JavaScript reliant, you may wish to warn users that do not have JavaScript enabled:
