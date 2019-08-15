@@ -514,6 +514,7 @@ function validate_submit() {
 
 	for (i=0; i<uploaders.length; i++) {
 		var required = isRequired(uploaders[i]);
+		update_status(uploaders[i]);
 		if (uploaders[i].classList.contains("validation_failed")) {
 			uploaders[i].classList.remove("validation_failed");
 		}
@@ -556,7 +557,7 @@ function update_status(uploader) {
 
 	var num_files_limit_hit        = "Files successfully uploaded";
 
-	if (isRequired(uploader)=="yes") {
+	if (isRequired(uploader)==true) {
 		// Required
 		if (uploader.getAttribute("data-allowed-uploads")==0 || uploader.getAttribute("data-allowed-uploads")==undefined) {
 			// Unlimited files
