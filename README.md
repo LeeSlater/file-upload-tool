@@ -66,16 +66,17 @@ stylesheet			   | Optional. The file name of an alternative stylesheet inside fi
 
 Available uploader object properties:
 
-Property Name   | Description
-----------------|--------------- 
-label           | Defaults to 'files'. A string describing the files to be uploaded. This will be shown on the uploader's label, and spaces will be replaced with underscores for directory names during upload.
-app_id          | \* Optional. A string that will be used when uploading files to define a directory for the app. For example if you have several apps using this uploader, the name of the app could be here.
-unique_id       | \* Optional. A string which should be unique for every instance. In a form for example, this may be the user's form ID.
-allowed_uploads | If there is a limit on how many files can be submitted for the uploader, set it here. If 0 or undefined, no limit is set.
-extensions      | If there are a limited number of extensions the user is allowed to upload, define them in a comma-separated list. If blank or undefined, defaults to 'pdf,jpg,jpeg,png,doc,docx,odt,txt'.
-required        | \*\* If at least one file is required uploading, set to true. If false or undefined, not required.
-size_limit      | A number defined in bytes (10000000 = 10mb) that is the maximum size of each file. Defaults to 23mb.
-parent_element  | If defined (via a CSS-style selector) the uploader will be placed in this element, instead of the default #file-uploaders element.
+Property Name           | Description
+------------------------|------------------------
+label                   | Defaults to 'files'. A string describing the files to be uploaded. This will be shown on the uploader's label, and spaces will be replaced with underscores for directory names during upload.
+app_id                  | \* Optional. A string that will be used when uploading files to define a directory for the app. For example if you have several apps using this uploader, the name of the app could be here.
+unique_id               | \* Optional. A string which should be unique for every instance. In a form for example, this may be the user's form ID.
+allowed_uploads         | If there is a limit on how many files can be submitted for the uploader, set it here. If 0 or undefined, no limit is set.
+extensions              | If there are a limited number of extensions the user is allowed to upload, define them in a comma-separated list. If blank or undefined, defaults to 'pdf,jpg,jpeg,png,doc,docx,odt,txt'.
+required                | \*\* If at least one file is required uploading, set to true. If false or undefined, not required. Can be set to the element selector for a checkbox (e.g. #id), where checked will equate to true.
+required_element_mode   | If 'required' is an element selector, this option will allow you to define how the element should be used. This is intended for future development and only currently supports 'checkbox', which is used by default regardless.
+size_limit              | A number defined in bytes (10000000 = 10mb) that is the maximum size of each file. Defaults to 23mb.
+parent_element          | If defined (via a CSS-style selector) the uploader will be placed in this element, instead of the default #file-uploaders element.
 
 \*   The final file structure for an upload should be `uploads/<app_id>/<unique_id>/<uploader_label>/<files>`.
 

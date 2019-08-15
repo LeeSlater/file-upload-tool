@@ -102,7 +102,15 @@ function generate_uploaders(uploaders, settings) {
 		if (uploaders[i].unique_id!=undefined) {
 			attributes['unique_id'] = uploaders[i].unique_id;
 		}
-		attributes['required'] = (uploaders[i].required=="true" || uploaders[i].required==true)?"yes":"no";
+
+		if (uploaders[i].required=="yes" || uploaders[i].required=="true" || uploaders[i].required==true) {
+			attributes['required'] = "yes";
+		} else if (uploaders[i].required=="no" || uploaders[i].required=="false" || uploaders[i].required==false) {
+			attributes['required'] = "no";
+		} else {
+			attributes['required'] = uploaders[i].required;
+		}
+
 		attributes['allowed-uploads'] = (uploaders[i].allowed_uploads?uploaders[i].allowed_uploads:"");
 		attributes['label'] = "Browse&nbsp;for&nbsp;"+(uploaders[i].label?uploaders[i].label:"files");
 		attributes['extensions'] = uploaders[i].extensions?uploaders[i].extensions:"pdf,jpg,jpeg,png,doc,docx,odt,xlsx,ods,txt";
@@ -464,35 +472,61 @@ function reset_uploader(uploader) {
 
 
 /**
+ *  Contains the logic for whether the defined uploader is required or not
+ */
+function isRequired(uploader) {
+	var required = false
+	if (uploader.getAttribute("data-required")=="yes") {
+		required = true;
+	} else if (document.querySelector(uploader.getAttribute("data-required"))!=undefined) {
+		var required_element = document.querySelector(uploader.getAttribute("data-required"));
+		var required_mode = "checkbox";
+		if (uploader.getAttribute("data-required_element_mode")!=undefined) {
+			required_mode = uploader.getAttribute("data-required_element_mode");
+		}
+		switch(required_mode) {
+			case "checkbox":
+				if (required_element.checked) {
+					console.log("required");
+					required = true;
+				}
+				break;
+		}
+	}
+	return required;
+}
+
+
+/**
  * If the submit_button has been defined, validate that the required uploaders have been used
  * and then click the original button to progress
  * - If an uploader has an upload in progress, it will warn the user and ask for confirmation
  * - If network errors have been encountered, the user will be allowed to continue
  */
 function validate_submit() {
+	if (bypass_validator==true) {
+		submit_button.click();
+		return;
+	}
+
 	var uploaders = document.querySelectorAll(".uploader");
 	var validation_passed = true;
 	var upload_in_progress = false;
 
 	for (i=0; i<uploaders.length; i++) {
-		if (uploaders[i].getAttribute("data-required")=="yes") {
+		var required = isRequired(uploaders[i]);
+		if (uploaders[i].classList.contains("validation_failed")) {
+			uploaders[i].classList.remove("validation_failed");
+		}
+		if (required==true) {
 			if (uploaders[i].classList.contains("in-progress")) {
 				upload_in_progress = true;
 			}
 			if ((uploaders[i].getAttribute("data-files-uploaded")-0) == 0) {
 				validation_passed = false;
 				uploaders[i].classList.add("validation_failed");
-			} else {
-				if (uploaders[i].classList.contains("validation_failed")) {
-					uploaders[i].classList.remove("validation_failed");
-				}
 			}
 		}
-	}
-
-	if (bypass_validator==true) {
-		submit_button.click();
-		return;
 	}
 
 	if (validation_passed==true) {
@@ -523,7 +557,7 @@ function update_status(uploader) {
 
 	var num_files_limit_hit        = "Files successfully uploaded";
 
-	if (uploader.getAttribute("data-required")=="yes") {
+	if (isRequired(uploader)=="yes") {
 		// Required
 		if (uploader.getAttribute("data-allowed-uploads")==0 || uploader.getAttribute("data-allowed-uploads")==undefined) {
 			// Unlimited files
