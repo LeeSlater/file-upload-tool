@@ -487,7 +487,6 @@ function isRequired(uploader) {
 		switch(required_mode) {
 			case "checkbox":
 				if (required_element.checked) {
-					console.log("required");
 					required = true;
 				}
 				break;
